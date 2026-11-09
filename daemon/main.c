@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,13 +5,10 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+#include "handle.h"
+
 #define SOCKET_PATH "/tmp/ctld.sock"
 #define BUFFER_SIZE 1024
-
-char *handle(char *action,char *service)
-{
-    return "Test\n";
-}
 
 int main(void)
 {
