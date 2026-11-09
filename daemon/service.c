@@ -44,6 +44,8 @@ pid_t start_service(const char *service)
         strncpy(working_dir, path, sizeof(working_dir));
         working_dir[sizeof(working_dir) - 1] = '\0';
 
+        printf("command: %s",command);
+        printf("working_dir: %s",working_dir);
 
         if (chdir(working_dir) != 0) {
             _exit(1);
