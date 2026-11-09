@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -38,6 +39,12 @@ pid_t start_service(const char *service)
     }
 
     if (pid == 0) {
+        char *working_dir = dirname(command);
+
+        if (chdir(working_dir) != 0) {
+            _exit(1);
+        }
+
         int log = open(logpath, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
         if (log < 0) {
