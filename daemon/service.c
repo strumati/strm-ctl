@@ -56,21 +56,28 @@ pid_t start_service(const char *service)
         int log = open(logpath, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
         if (log < 0) {
+            perror("open log");
             _exit(1);
         }
 
-        dup2(log, STDOUT_FILENO);
-        dup2(log, STDERR_FILENO);
+        if (dup2(log, STDOUT_FILENO) < 0 ||
+            dup2(log, STDERR_FILENO) < 0) {
+            perror("dup2");
+            _exit(1);
+        }
 
         close(log);
 
-        if (chdir(working_dir) != 0)
+        if (chdir(working_dir) != 0) {
+            perror("chdir");
             _exit(1);
+        }
 
         char *argv[] = { command, NULL };
 
         execv(command, argv);
 
+        perror("execv");
         _exit(127);
     }
 
