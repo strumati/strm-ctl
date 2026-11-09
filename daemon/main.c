@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+#include "autostart.h"
 #include "handle.h"
 
 #define SOCKET_PATH "/tmp/ctld.sock"
@@ -12,6 +13,8 @@
 
 int main(void)
 {
+    autostart();
+
     int server_fd, client_fd;
     struct sockaddr_un addr;
     char buffer[BUFFER_SIZE];
