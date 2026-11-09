@@ -39,3 +39,46 @@ char *read_file(const char *servicename)
 
     return content;
 }
+
+char *read_file_full(const char *servicename)
+{
+    FILE *file = fopen(servicename, "rb");
+
+    if (file == NULL)
+        return NULL;
+
+    if (fseek(file, 0, SEEK_END) != 0) {
+        fclose(file);
+        return NULL;
+    }
+
+    long size = ftell(file);
+
+    if (size < 0) {
+        fclose(file);
+        return NULL;
+    }
+
+    rewind(file);
+
+    char *content = malloc((size_t)size + 1);
+
+    if (content == NULL) {
+        fclose(file);
+        return NULL;
+    }
+
+    size_t read = fread(content, 1, (size_t)size, file);
+
+    if (read != (size_t)size && ferror(file)) {
+        free(content);
+        fclose(file);
+        return NULL;
+    }
+
+    content[read] = '\0';
+
+    fclose(file);
+
+    return content;
+}
