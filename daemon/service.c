@@ -25,7 +25,7 @@ pid_t start_service(const char *service)
 
     char *command = read_file(path);
 
-    printf("command: %s",command);
+    printf("command: %s\n",command);
 
     if (command == NULL) {
         return -1;
@@ -40,7 +40,11 @@ pid_t start_service(const char *service)
         return -1;
     }
 
+    printf("pid: %d\n",pid);
+
     if (pid == 0) {
+        printf("hii fork success!\n");
+
         char working_dir[512];
 
         strncpy(working_dir, path, sizeof(working_dir));
