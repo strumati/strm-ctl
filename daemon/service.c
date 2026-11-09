@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,6 +65,14 @@ int stop_service(pid_t pid)
 {
     if (kill(pid, SIGTERM) == -1) {
         return -1;
+    }
+
+    int status;
+
+    while (waitpid(pid, &status, 0) == -1) {
+        if (errno != EINTR) {
+            return -1;
+        }
     }
 
     return 0;

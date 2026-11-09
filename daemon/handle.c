@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "file.h"
+#include "service.h"
 
 char *handle(char *action,char *service)
 {
@@ -19,17 +20,22 @@ char *handle(char *action,char *service)
             return "Error Service Not Found!\n";
         }
 
-        char *content = read_file(path);
+        pid_t pid = start_service(service);
 
-        if (content == NULL) {
-            return "Error couldn't read Service\n";
+        if (pid > 0) {
+            add_service(service, pid);
         }
 
-        printf("Service content: %s\n", content);
+    } else if (strcmp(action,"logs") == 0) {
 
+    } else if (strcmp(action,"stop") == 0) {
+        Service *tmpser = find_service(service);
 
-    } else if (strcmp(action,"lol") == 0) {
-
+        if (tmpser != NULL) {
+            if (stop_service(tmpser->pid) == 0) {
+                remove_service(service);
+            }
+        }
     }
 
     return "Test\n";
