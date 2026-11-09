@@ -47,15 +47,11 @@ pid_t start_service(const char *service)
 
         char working_dir[512];
 
-        strncpy(working_dir, path, sizeof(working_dir));
-        working_dir[sizeof(working_dir) - 1] = '\0';
+        snprintf(working_dir, sizeof(working_dir), "%s", path);
+        dirname(working_dir);
 
         printf("command: %s",command);
         printf("working_dir: %s",working_dir);
-
-        if (chdir(working_dir) != 0) {
-            _exit(1);
-        }
 
         int log = open(logpath, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
@@ -67,6 +63,9 @@ pid_t start_service(const char *service)
         dup2(log, STDERR_FILENO);
 
         close(log);
+
+        if (chdir(working_dir) != 0)
+            _exit(1);
 
         char *argv[] = { command, NULL };
 
