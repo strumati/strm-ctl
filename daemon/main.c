@@ -74,6 +74,9 @@ int main(void)
             {
                 char *res = handle(args[1],args[2]);
                 write(client_fd, res, strlen(res));
+            } else {
+                char *res = "ctl:\n - start <service>\n - logs <service>\n - stop <service>\n";
+                write(client_fd, res, strlen(res));
             }
         }
 
