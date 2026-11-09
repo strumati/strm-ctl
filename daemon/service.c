@@ -25,6 +25,8 @@ pid_t start_service(const char *service)
 
     char *command = read_file(path);
 
+    printf("command: %s",command);
+
     if (command == NULL) {
         return -1;
     }
