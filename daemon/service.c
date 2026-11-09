@@ -68,3 +68,50 @@ int stop_service(pid_t pid)
 
     return 0;
 }
+
+Service *find_service(const char *name)
+{
+    for (int i = 0; i < service_count; i++) {
+        if (strcmp(services[i].name, name) == 0) {
+            return &services[i];
+        }
+    }
+
+    return NULL;
+}
+
+
+int add_service(const char *name, pid_t pid)
+{
+    if (service_count >= MAX_SERVICES)
+        return -1;
+
+    if (find_service(name) != NULL)
+        return -1;
+
+    snprintf(services[service_count].name, sizeof(services[service_count].name), "%s", name);
+
+    services[service_count].pid = pid;
+
+    service_count++;
+
+    return 0;
+}
+
+int remove_service(const char *name)
+{
+    for (int i = 0; i < service_count; i++) {
+        if (strcmp(services[i].name, name) == 0) {
+
+            for (int j = i; j < service_count - 1; j++) {
+                services[j] = services[j + 1];
+            }
+
+            service_count--;
+
+            return 0;
+        }
+    }
+
+    return -1;
+}
