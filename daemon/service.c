@@ -39,7 +39,11 @@ pid_t start_service(const char *service)
     }
 
     if (pid == 0) {
-        char *working_dir = dirname(command);
+        char working_dir[512];
+
+        strncpy(working_dir, path, sizeof(working_dir));
+        working_dir[sizeof(working_dir) - 1] = '\0';
+
 
         if (chdir(working_dir) != 0) {
             _exit(1);
