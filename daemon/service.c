@@ -47,7 +47,7 @@ pid_t start_service(const char *service)
 
         char working_dir[512];
 
-        snprintf(working_dir, sizeof(working_dir), "%s", path);
+        snprintf(working_dir, sizeof(working_dir), "%s", command);
         dirname(working_dir);
 
         printf("command: %s",command);
